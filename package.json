@@ -1,0 +1,31 @@
+{
+  "name": "cordova-plugin-color-picker",
+  "version": "1.0.0",
+  "description": "A plug-in to display a dialog that lets user choose a color",
+  "cordova": {
+    "id": "cordova-plugin-color-picker",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avargaskun/cordova-plugin-color-picker.git"
+  },
+  "keywords": [
+    "cordova",
+    "plugin",
+    "color",
+    "picker",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "Antonio Vargas Garcia",
+  "license": "Apache-2",
+  "bugs": {
+    "url": "https://github.com/avargaskun/cordova-plugin-color-picker"
+  },
+  "homepage": "https://github.com/avargaskun/cordova-plugin-color-picker"
+}

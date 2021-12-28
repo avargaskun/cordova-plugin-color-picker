@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="cordova-plugin-color-picker"
+        version="1.0.0">
+
+  <name>ColorPicker</name>
+
+  <engines>
+    <engine name="cordova" version=">=7.0.0"/>
+    <engine name="cordova-android" version=">=4.0.0"/>
+    <engine name="cordova-ios" version=">=4.4.0"/>
+  </engines>
+
+  <asset src="www/colorPicker.js" target="js/colorPicker.js"/>
+
+  <js-module src="www/colorPicker.js" name="colorPicker">
+    <clobbers target="cordova.plugins.colorPicker" />
+  </js-module>
+
+  <platform name="android">
+    <framework src="com.github.QuadFlask:colorpicker:0.0.15" />
+    <framework src="build-extras.gradle" custom="true" type="gradleReference" />
+    <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="ColorPicker">
+          <param name="android-package" value="com.plugin.colorpicker.ColorPicker"/>
+        </feature>
+    </config-file>
+    <source-file src="src/android/ColorPicker.java" target-dir="src/com/plugin/colorpicker/"/>
+  </platform>
+
+  <platform name="ios">
+      <config-file target="config.xml" parent="/*">
+          <feature name="ColorPicker">
+              <param name="ios-package" value="ColorPicker" onload="true" />
+              <param name="onload" value="true" />
+          </feature>
+      </config-file>
+    <header-file src="src/ios/ColorPicker.h" />
+    <source-file src="src/ios/ColorPicker.m" />
+  </platform>
+
+</plugin>
