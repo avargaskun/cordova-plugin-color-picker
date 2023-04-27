@@ -7,6 +7,7 @@ module.exports = {
             title: 'Choose color',
             color: '#FFFFFF',
             withAlpha: false,
+            withProgress: false,
         };
         Object.assign(defaults, options);
         cordova.exec(successCallback, errorCallback, "ColorPicker", "showDialog", [defaults]);

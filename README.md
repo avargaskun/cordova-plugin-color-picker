@@ -78,7 +78,9 @@ The options available are:
 * `title`: The string to show as title of the dialog. Defaults to `'Choose color'`
 * `color`: The initial color to pick. Defaults to `'#FFFFFF'`
 * `withAlpha`: Whether to display the alpha slider. Defaults to `false`
+* `withProgress`: If `true`, the success callback will be invoked every time the user changes color in the picker, otherwise the callback will only be invoked when the picker is dismissed. Defaults to `false`
 
 The result object has the following values:
 
 * `color`: The color picked by the user. If the initial option `withAlpha` was set to `true` the alpha level will be the first 2 hex characters of the string. For example, black color with 100% opacity: `'#FF000000'`
+* `dismissed`: If `true` the user has dismissed the dialog, otherwise the dialog is still showing.

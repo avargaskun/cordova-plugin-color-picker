@@ -2,6 +2,7 @@
 
 @interface ColorPicker()
 @property(strong, nonatomic) CDVInvokedUrlCommand *showCommand;
+@property (nonatomic, assign) Boolean withProgress;
 - (UIColor *)colorFromHexString:(NSString *)hexString;
 @end
 
@@ -31,6 +32,7 @@
         picker.title = title;
         picker.selectedColor = color;
         picker.supportsAlpha = [[options objectForKey:@"withAlpha"] boolValue];
+        self.withProgress = [[options objectForKey:@"withProgress"] boolValue];
         self.showCommand = command;
         [self.viewController presentViewController:picker animated:TRUE completion:nil];
     }
@@ -44,24 +46,39 @@
 - (void) colorPickerViewControllerDidFinish:(UIColorPickerViewController*)viewController
 API_AVAILABLE(ios(14.0)){
     if (self.showCommand != nil) {
-        const CGFloat* components = CGColorGetComponents(viewController.selectedColor.CGColor);
-        const CGFloat alpha = CGColorGetAlpha(viewController.selectedColor.CGColor);
-        NSString* hexValue;
-        if (viewController.supportsAlpha) {
-            hexValue = [NSString stringWithFormat:@"#%02lX%02lX%02lX%02lX", lround(alpha * 255), lround(components[0] * 255), lround(components[1] * 255), lround(components[2] * 255)];
-        } else {
-            hexValue = [NSString stringWithFormat:@"#%02lX%02lX%02lX", lround(components[0] * 255), lround(components[1] * 255), lround(components[2] * 255)];
-        }
         NSDictionary *result = @{
-            @"color": hexValue
+            @"color": [self selectedColorHex:viewController],
+            @"dismissed": @TRUE
         };
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.showCommand.callbackId];
     }
 }
 
-- (void) colorPickerViewControllerDidSelectColor:(UIColorPickerViewController*)viewController
+- (void) colorPickerViewController:(UIColorPickerViewController*)viewController didSelectColor:(UIColor *)color continuously:(BOOL)continuously
 API_AVAILABLE(ios(14.0)){
+    if (self.withProgress && !continuously && self.showCommand != nil) {
+        NSDictionary *result = @{
+            @"color": [self selectedColorHex:viewController],
+            @"dismissed": @FALSE
+        };
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
+        pluginResult.keepCallback = @TRUE;
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.showCommand.callbackId];
+    }
+}
+
+- (NSString *)selectedColorHex:(UIColorPickerViewController*)viewController
+API_AVAILABLE(ios(14.0)) {
+    const CGFloat* components = CGColorGetComponents(viewController.selectedColor.CGColor);
+    const CGFloat alpha = CGColorGetAlpha(viewController.selectedColor.CGColor);
+    NSString* hexValue;
+    if (viewController.supportsAlpha) {
+        hexValue = [NSString stringWithFormat:@"#%02lX%02lX%02lX%02lX", lround(alpha * 255), lround(components[0] * 255), lround(components[1] * 255), lround(components[2] * 255)];
+    } else {
+        hexValue = [NSString stringWithFormat:@"#%02lX%02lX%02lX", lround(components[0] * 255), lround(components[1] * 255), lround(components[2] * 255)];
+    }
+    return hexValue;
 }
 
 - (UIColor *)colorFromHexString:(NSString *)hexString {
