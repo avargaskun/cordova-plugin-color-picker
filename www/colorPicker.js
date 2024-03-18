@@ -5,6 +5,8 @@ module.exports = {
     showDialog: function (options, successCallback, errorCallback) {
         const defaults = {
             title: 'Choose color',
+            okText: 'ok',
+            cancelText: 'cancel',
             color: '#FFFFFF',
             withAlpha: false,
             withProgress: false,
